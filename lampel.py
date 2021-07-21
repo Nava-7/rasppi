@@ -3,7 +3,9 @@
 import RPi.GPIO as GPIO
 import time, sys, datetime
 import random
+
 #from neopixel import *
+
 from gpiozero import LED
 from time import sleep
 
@@ -26,6 +28,7 @@ def setColor(color):
     if (color == "red"):
         red.on
         print("red")
+
         green.off
         yellow.off
     elif (color == "yellow"):
@@ -36,6 +39,7 @@ def setColor(color):
     elif (color == "green"):
         green.on
         print("green")
+
         yellow.off
         red.off
 
@@ -206,11 +210,13 @@ try:
             #nach 6 minuten wird zähler für gesamtzeit auf 5 minuten zurückgesetzt --> vermeidung von überlauf
             else:  
                 fiveminutes = 30
+
                 averagevalue = 0
                 averagecyclus = 0
 
                 #Die ersten 12000 Eintraege also die der ersten Minute der aktuellen 6 Minuten wird aus der Liste geloescht
                 #12000 * sleeptime = 12000 * 0.005 sek = 60 sek
+
                 for i in range(1000):  
                     average.pop(0)
 
