@@ -3,7 +3,9 @@
 import RPi.GPIO as GPIO
 import time, sys, datetime
 import random
-from neopixel import *
+
+#from neopixel import *
+
 from gpiozero import LED
 from time import sleep
 
@@ -13,7 +15,7 @@ from time import sleep
 GPIO.setmode(GPIO.BCM)	
 
 #GPIO SETUP
-SOUND_PIN = 22 		# PinNr. 15 - GPIO 22
+SOUND_PIN = 21 		# PinNr. 15 - GPIO 22
 GPIO.setup(SOUND_PIN, GPIO.IN) 
  
 #LED PANEL configuration:
@@ -25,14 +27,19 @@ green = LED(18)
 def setColor(color):
     if (color == "red"):
         red.on
+        print("red")
+
         green.off
         yellow.off
     elif (color == "yellow"):
         yellow.on
+        print("yellow")
         red.off
         green.off
     elif (color == "green"):
         green.on
+        print("green")
+
         yellow.off
         red.off
 
@@ -48,9 +55,9 @@ ledcolor2 = ""
 
 #grenzen/vergleichswerte, die bestimmen, wann leds rot, gelb oder grün anzeigen
 dblevel_min = 0   #0 
-dblevel_mid = 16  #13 
-dblevel_mid2 = 23 #20 
-dblevel_max = 28  #25
+dblevel_mid = 8  #13 
+dblevel_mid2 = 10 #20 
+dblevel_max = 15  #25
 
 #zählt count hoch oder runter, abhängig davon, ob eingang registriert wurde oder nicht
 def DETECTED(SOUND_PIN): 
@@ -175,10 +182,10 @@ try:
             middle = []
 
         #Nach jeder Minute startet die Berechnung und Durchfuehrung des Durchschnittwertes
-        if averagecyclus >= 60: 
+        if averagecyclus >= 5: 
 
             #Sollte es unter 6 Minuten sein wird dies ausgefuehrt
-            if fiveminutes < 359:  
+            if fiveminutes < 30:  
       
                 #zähle alle werte in der liste average (db-werte) zusammen
                 for x in average:
@@ -202,13 +209,15 @@ try:
 
             #nach 6 minuten wird zähler für gesamtzeit auf 5 minuten zurückgesetzt --> vermeidung von überlauf
             else:  
-                fiveminutes = 300
+                fiveminutes = 30
+
                 averagevalue = 0
                 averagecyclus = 0
 
                 #Die ersten 12000 Eintraege also die der ersten Minute der aktuellen 6 Minuten wird aus der Liste geloescht
                 #12000 * sleeptime = 12000 * 0.005 sek = 60 sek
-                for i in range(12000):  
+
+                for i in range(1000):  
                     average.pop(0)
 
                 #Der Durchschnitt wird erneut berechnet aus den aktuellen 5 Minuten
